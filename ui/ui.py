@@ -12,8 +12,8 @@ class MainUI(QMainWindow):
 
         # Create table widget
         self.table = QTableWidget()
-        self.table.setColumnCount(4)  # Adjust the number of columns as needed
-        self.table.setHorizontalHeaderLabels(['Item', 'Quantity', 'Expiration Date', 'Days Remaining'])
+        self.table.setColumnCount(5)  # Updated number of columns to match dataset
+        self.table.setHorizontalHeaderLabels(['Item', 'Quantity', 'Expiration Date', 'Days Remaining', 'Action'])
 
         # Add a button for uploading Excel file
         self.upload_button = QPushButton('Upload Excel File')
@@ -39,9 +39,22 @@ class MainUI(QMainWindow):
                 print("Failed to load data from Excel file.")
 
     def load_data_into_table(self, data):
+        # Check the data being passed
+        print("Data being loaded into table:\n", data)
         self.table.setRowCount(len(data))
         for i, row in data.iterrows():
             self.table.setItem(i, 0, QTableWidgetItem(row['Item']))
             self.table.setItem(i, 1, QTableWidgetItem(str(row['Quantity'])))
             self.table.setItem(i, 2, QTableWidgetItem(row['Expiration Date'].strftime('%Y-%m-%d')))
             self.table.setItem(i, 3, QTableWidgetItem(str(row['Days Remaining'])))
+            self.table.setItem(i, 4, QTableWidgetItem(self.get_action(row['Days Remaining'])))
+
+    def get_action(self, days_remaining):
+        if days_remaining <= 0:
+            return "Expired"
+        elif days_remaining <= 3:
+            return "Use Immediately"
+        elif days_remaining <= 7:
+            return "Use Soon"
+        else:
+            return "In Stock"
