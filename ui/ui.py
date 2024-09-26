@@ -8,12 +8,13 @@ class MainUI(QMainWindow):
         super().__init__()
         self.gemini_handler = gemini_handler
         self.setWindowTitle('Inventory Management')
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1000, 600)  # Increased width to accommodate the new button
 
         # Create table widget
         self.table = QTableWidget()
-        self.table.setColumnCount(5)  # Updated number of columns to match dataset
-        self.table.setHorizontalHeaderLabels(['Item', 'Quantity', 'Expiration Date', 'Days Remaining', 'Action'])
+        self.table.setColumnCount(6)  # Updated number of columns to match the dataset and new button
+        self.table.setHorizontalHeaderLabels(
+            ['Item', 'Quantity', 'Expiration Date', 'Days Remaining', 'Action', 'Generate Response'])
 
         # Add a button for uploading Excel file
         self.upload_button = QPushButton('Upload Excel File')
@@ -49,6 +50,13 @@ class MainUI(QMainWindow):
             self.table.setItem(i, 3, QTableWidgetItem(str(row['Days Remaining'])))
             self.table.setItem(i, 4, QTableWidgetItem(self.get_action(row['Days Remaining'])))
 
+            # Add a button to generate response
+            response_button = QPushButton("Generate Response")
+            # Pass data directly to avoid lambda issues
+            response_button.clicked.connect(
+                self.create_response_callback(row['Item'], row['Quantity'], row['Days Remaining']))
+            self.table.setCellWidget(i, 5, response_button)
+
     def get_action(self, days_remaining):
         if days_remaining <= 0:
             return "Expired"
@@ -58,3 +66,16 @@ class MainUI(QMainWindow):
             return "Use Soon"
         else:
             return "In Stock"
+
+    def create_response_callback(self, item, quantity, days_remaining):
+        # Returns a function that calls generate_response with the provided parameters
+        def callback():
+            self.generate_response(item, quantity, days_remaining)
+
+        return callback
+
+    def generate_response(self, item, quantity, days_remaining):
+        # Generate idea based on item data
+        response = self.gemini_handler.generate_idea(item, quantity, days_remaining)
+        print(f"Response for {item}: {response}")  # Display response in console (can be updated to show in UI)
+
