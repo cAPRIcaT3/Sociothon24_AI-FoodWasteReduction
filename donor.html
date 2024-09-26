@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Registration</title>
+    <link rel="stylesheet" href="donorstyle.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="food-waste.php">Dashboard</a></li>
+                <li><a href="donor.html" class="active">Add Donor</a></li>
+                <li><a href="donor-details.html">Donors Details</a></li>
+                <li><a href="user.php">User</a></li>
+                <li><a href="volunteer.html">Volunteer</a></li>
+                <li><a href="listed-foods.php">Listed Foods</a></li>
+                <li><a href="waste-management.php">Waste Management</a></li>
+                <li><a href="waste-food.php">Waste Food</a></li>
+                <li><a href="manage-website.php">Manage Website</a></li>
+                <li><a href="report.php">Report</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <h2>Donor Registration Form</h2>
+            <form action="submit-donor.php" method="POST">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" placeholder="Enter donor name" required>
+
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="Enter donor email" required>
+
+                <label for="phone">Phone Number *</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter mobile number" required>
+
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" placeholder="Enter donor address">
+
+                <label for="dob">Date of Birth *</label>
+                <input type="date" id="dob" name="dob" required>
+
+                <label for="password">Password *</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+                <label for="confirm_password">Confirm Password *</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+
+                <button type="submit">Submit</button>
+            </form>
+            <div class="edit-option">
+                <a href="editdonor.html">Edit Donor Details</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
